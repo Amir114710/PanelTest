@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     # Keenthemes Apps
     'driverapp.apps.DriverappConfig',
     'realestate.apps.RealestateConfig',
-
-    #3D party 
+    'account.apps.AccountConfig',
+    # 3D party 
 ]
 
 MIDDLEWARE = [
@@ -134,3 +134,9 @@ STATICFILES_DIRS = [path.join(BASE_DIR, 'assets')]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+STAR_RATINGS_STAR_HEIGHT = 17
+STAR_RATINGS_RERATE = True
+STAR_RATINGS_ANONYMOUS = True
+
+AUTH_USER_MODEL = 'account.User'
