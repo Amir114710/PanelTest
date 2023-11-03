@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -140,6 +141,7 @@ class TypeOwnership(models.Model):
 
 # مدل ثبت اطلاعات ماک دار
 class PropertyInformation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='property')
     owner_name = models.CharField(verbose_name='نام ملک', max_length=1000)
     state = models.ForeignKey(State, verbose_name='استان', on_delete=models.CASCADE, related_name='property')
     city = models.ForeignKey(City, verbose_name='شهر', on_delete=models.CASCADE, related_name='property')
@@ -176,11 +178,11 @@ class PropertyInformation(models.Model):
     property_number = models.BigIntegerField(verbose_name='شماره ملک')
     days_booking = models.CharField(max_length=1000000000, verbose_name='روز های ازار برای رزرو')
     # Bank information.
-    shaba = models.BigIntegerField(verbose_name='شماره شبا')
+    shaba_number = models.BigIntegerField(verbose_name='شماره شبا')
     cart_number = models.BigIntegerField(verbose_name='شماره کارت')
     account_number = models.BigIntegerField(verbose_name='شماره حساب')
     # End
-    meli_cart = models.ImageField(upload_to='images/ads/property/documents', verbose_name='کارت ملی یا شناسنامه')
+    melli_cart = models.ImageField(upload_to='images/ads/property/documents', verbose_name='کارت ملی یا شناسنامه')
     discount = models.BooleanField(default=False)
     residence_rules = models.TextField(max_length=100000000, verbose_name='قوانین اقامت')
     cancel_request = models.TextField(max_length=100000000, verbose_name='قوانین لغو درخواست(کنسلی)')
@@ -190,13 +192,15 @@ class PropertyInformation(models.Model):
     enter_time = models.TimeField(verbose_name='ساعت ورود')
     exit_time = models.TimeField(verbose_name='ساعت خروج')
     minimum_stay_limit = models.CharField(max_length=100000, verbose_name='حداقل شب اقامت')
-    maximom_stay_limit = models.CharField(max_length=10000, verbose_name='حداکثر مدت اقامت')
+    maximum_stay_limit = models.CharField(max_length=10000, verbose_name='حداکثر مدت اقامت')
     welfare_possibilities = models.ManyToManyField(WelfarePossibilities, verbose_name='امکانات رفاهی')
     other_spaces_residence = models.ManyToManyField(OtherSpacesResidence, verbose_name='سایر فضاهای اقامتگاه')
     environmental_context = models.ForeignKey(EnvironmentalContext,on_delete=models.CASCADE ,verbose_name='بافت محیطی')
     # Bedrooms Information.
     room_title = models.CharField(max_length=10000, verbose_name='عنوان اتاق')
+    slug = models.SlugField()
     bed_count = models.ForeignKey(BedCount, on_delete=models.CASCADE, verbose_name='تعداد تخت ها')
     room_possibilities = models.ManyToManyField(RoomPossibilities, verbose_name='امکانات اتاق')
     type_ownership = models.ForeignKey(TypeOwnership, on_delete=models.CASCADE, verbose_name='نوع مالکیت')
     is_public = models.BooleanField(default=False)
+    is_reserve = models.BooleanField(default=False)

@@ -7,7 +7,7 @@ from .models import *
 @admin.register(PropertyInformation)
 class PropertyInformationAdmin(admin.ModelAdmin):
     list_display = ('owner_name',)
-
+    prepopulated_fields = {'slug': ('title',)}
 
 @admin.register(State)
 class PropertyInformationAdmin(admin.ModelAdmin):

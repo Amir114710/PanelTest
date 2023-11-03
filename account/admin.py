@@ -43,7 +43,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ( 'phone' ,'email', 'password', 'is_active', 'is_admin')
+        fields = ('phone', 'email', 'password', 'is_active', 'is_admin')
 
 
 class UserAdmin(BaseUserAdmin):
@@ -54,25 +54,26 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('phone','email','is_admin','is_active','is_bus_driver','is_simple_user','is_realestate')
-    list_filter = ('is_admin','is_active','is_bus_driver','is_simple_user','is_realestate')
+    list_display = ('phone', 'email', 'is_admin', 'is_active', 'is_bus_driver', 'is_simple_user', 'is_realestate')
+    list_filter = ('is_admin', 'is_active', 'is_bus_driver', 'is_simple_user', 'is_realestate')
     fieldsets = (
-        (None, {'fields': ('phone','password')}),
-        ('اطلاعات شخصی', {'fields': ('image','Full_name','email')}),
-        ('دسترسی ها', {'fields': ('is_admin','is_active','is_bus_driver','is_simple_user','is_realestate')}),
+        (None, {'fields': ('phone', 'password')}),
+        ('اطلاعات شخصی', {'fields': ('image', 'Full_name', 'email')}),
+        ('دسترسی ها', {'fields': ('is_admin', 'is_active', 'is_bus_driver', 'is_simple_user', 'is_realestate')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('phone' ,'email', 'password1', 'password2'),
+            'fields': ('phone', 'email', 'password1', 'password2'),
         }),
     )
     search_fields = ('phone',)
     ordering = ('phone',)
     filter_horizontal = ()
-    
+
+
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
 # ... and, since we're not using Django's built-in permissions,

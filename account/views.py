@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login , authenticate , logout
 import ghasedakpack
 import requests
-from .form import RegisterForm , OtpForm , Edite_Profile_Form 
+from .form import RegisterForm , OtpForm , Edite_Profile_Form
 from random import randint
 from .models import OTP, User
 
@@ -40,7 +40,7 @@ class CheckOtpCode(LoginRequirdMixins , FormView):
             , is_bus_driver=otp.is_bus_driver , is_realestate=otp.is_realestate , is_simple_user=otp.is_simple_user)
             login(self.request , user)
             otp.delete()
-            return redirect('#home')       
+            return redirect('#home')
         else:
             form.add_error(cd['code'] , 'this information is not correct')
         return render(self.request , self.template_name , {'form':form})
@@ -71,3 +71,40 @@ def profile_edite(request):
         return render(request , 'account/' , {'form':form})
     else:
         return redirect('#home')
+
+
+class PropertyDeleteView(DeleteView):
+    template_name = ''
+    model = PropertyInformation
+    success_url = reverse_lazy('')
+
+
+class UserPropertyView(View):
+    def get(self, reqeust, pk):
+        user = get_object_or_404(User, id=pk)
+        property = user.property.all()
+        property_reserve = user.property.filter(is_reserve=True, is_public=True)
+        return render(reqeust, '', {'property': property, 'property_reserve':property_reserve})
+
+
+class UserProperUpdateFormView(View):
+    form_class = UserProperUpdateFormView
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user != request.user.id:
+            return redirect('')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        user = get_object_or_404(User, id=pk)
+        form = self.form_class(instance=user)
+        return render(request, '', {'form': form})
+
+    def post(self, request, pk):
+        user = get_object_or_404(User, id=pk)
+        form = self.form_class(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('', user.pk)
+
+
