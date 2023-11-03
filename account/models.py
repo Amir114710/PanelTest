@@ -53,6 +53,13 @@ class OTP(models.Model):
     phone = models.CharField(max_length=12)
     code = models.SmallIntegerField(null=True, blank=True)
     expiration_date =  models.DateTimeField(null=True, blank=True , auto_now_add=True)
+    email = models.EmailField(
+        verbose_name='پست الکترونیک',
+        max_length=255,
+    )
+    username = models.CharField(max_length=200, verbose_name='نام کاربری' ,unique=True , null=True, blank=True)
+    image = models.ImageField(upload_to='UserImage' , verbose_name='عکس کاربر' , null=True, blank=True)
+    Full_name = models.CharField(max_length=200 , verbose_name='نام کامل' , null=True, blank=True)
     is_bus_driver = models.BooleanField(default=False , verbose_name='راننده ی اتوبوس')
     is_simple_user = models.BooleanField(default=False , verbose_name='کاربر ساده')
     is_realestate = models.BooleanField(default=False , verbose_name='املاک دار')

@@ -6,6 +6,9 @@ from account.models import User
 
 class RegisterForm(forms.Form):
     phone = forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control' , 'placeholder':'شماره تلفن'}) , validators=[validators.MaxLengthValidator(11)])
+    username = forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control' , 'placeholder':'نام کاربری'}))
+    Full_name = forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control' , 'placeholder':'نام'}))
+    email = forms.CharField(widget = forms.TextInput(attrs={'class': 'form-control' , 'placeholder':'ایمیل'}))
     is_bus_driver = forms.CharField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'  , 'placeholder':' ثبت نام به عنوان راننده ی اتوبوس'}))
     is_realestate = forms.CharField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input' , 'placeholder':' ثبت نام به عنوان املاک دار'}))
     is_simple_user = forms.CharField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input' , 'placeholder':' ثبت نام به عنوان کاربر ساده'}))

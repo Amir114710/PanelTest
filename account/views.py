@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login , authenticate , logout
 import ghasedakpack
 import requests
-from .form import RegisterForm , OtpForm , Edite_Profile_Form , AddressCreationForm
+from .form import RegisterForm , OtpForm , Edite_Profile_Form 
 from random import randint
 from .models import OTP, User
 
@@ -21,7 +21,9 @@ class OtpRegisterationView(LoginRequirdMixins , FormView):
         random_code = randint(1000 , 9999)
         sms.verification({'receptor': cd['phone'] , 'type': '1','template': 'resinabeat','param1': random_code})
         token = str(uuid4())
-        OTP.objects.create(phone = cd['phone'] , code = random_code , is_simple_user=cd['is_simple_user'] , is_realestate=cd['is_realestate'] , is_bus_driver=cd["is_bus_driver"] , token = token)
+        OTP.objects.create(phone = cd['phone'] , code = random_code , username=cd['username']
+        , Full_name=cd['Full_name'] , email=cd['email'] , is_simple_user=cd['is_simple_user']
+        , is_realestate=cd['is_realestate'] , is_bus_driver=cd["is_bus_driver"] , token = token)
         print(random_code)
         return redirect(reverse('account:check_otp') + f'?token={token}')
 
@@ -34,7 +36,8 @@ class CheckOtpCode(LoginRequirdMixins , FormView):
         cd = form.cleaned_data
         if OTP.objects.filter(code=cd['code'],token=token).exists():
             otp = OTP.objects.get(token=token)
-            user , is_created = User.objects.get_or_create(phone = otp.phone , is_bus_driver=otp.is_bus_driver , is_realestate=otp.is_realestate , is_simple_user=otp.is_simple_user)
+            user , is_created = User.objects.get_or_create(phone = otp.phone , username = otp.username , Full_name=otp.Full_name , email=otp.email
+            , is_bus_driver=otp.is_bus_driver , is_realestate=otp.is_realestate , is_simple_user=otp.is_simple_user)
             login(self.request , user)
             otp.delete()
             return redirect('#home')       
