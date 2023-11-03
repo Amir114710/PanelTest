@@ -79,3 +79,8 @@ class PropertyInformationUpdateView(View):
             form.save()
             return redirect('')
     
+
+class PropertyDetailView(View):
+    def get(self, request, pk):
+        properties = get_object_or_404(PropertyInformation, id=pk)
+        return render(request, '', {'properties':properties})
