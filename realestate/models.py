@@ -204,3 +204,16 @@ class PropertyInformation(models.Model):
     type_ownership = models.ForeignKey(TypeOwnership, on_delete=models.CASCADE, verbose_name='نوع مالکیت')
     is_public = models.BooleanField(default=False)
     is_reserve = models.BooleanField(default=False)
+
+
+
+
+class Comment(models.Model):
+    property_post = models.ForeignKey(PropertyInformation, on_delete=models.CASCADE, related_name='comment', verbose_name='اگهی ملک')
+    name = models.CharField(max_length=1000, verbose_name='نام' )
+    body = models.TextField(max_length=10000000, verbose_name=' نظر')
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, related_name='reply', verbose_name='ریپلای')
+
+    def __str__(self):
+        return self.name
+    

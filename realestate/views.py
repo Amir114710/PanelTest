@@ -4,24 +4,27 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView
 from .forms import PropertyInformationForm, UserPropertyForm
-from .models import PropertyInformation
+from .models import *
 
 
 # Create your views here.
 
 
-class PropertyDeleteView(DeleteView):
-    template_name = ''
-    model = PropertyInformation
-    success_url = reverse_lazy('')
-
-
+# 
 class UserPropertyView(View):
-    def get(self, reqeust, pk):
+    """
+    برای نشون دادن اطلاعات کاربر 
+    
+    """
+    def dispatch(self, request, *args, **kwargs):
+        if request.user != request.user.id:
+            return redirect('')
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def get(self, request, pk):
         user = get_object_or_404(User, id=pk)
-        properties = user.property.all()
-        property_reserve = user.property.filter(is_reserve=True, is_public=True)
-        return render(reqeust, '', {'properties': properties, 'property_reserve':property_reserve})
+        return render(request, '', {'user':user})
 
 
 class UserProperUpdateFormView(View):
@@ -45,7 +48,7 @@ class UserProperUpdateFormView(View):
             return redirect('', user.pk)
 
 
-class PropertyInformationView(View):
+class PropertyInformationCreateView(View):
     form_class = PropertyInformationForm
     def get(self, request):
         form = self.form_class()
@@ -63,24 +66,53 @@ class PropertyInformationUpdateView(View):
     form_class = PropertyInformationForm
 
     def dispatch(self, request, *args, **kwargs):
-        if request.propertyinformation.user.id != request.user.id:
+        if request.PropertyInformation.user.id != request.user.id:
             return redirect('')
         return super().dispatch(request, *args, **kwargs)
     
-    def get(self, request, pk):
-        properties = get_object_or_404(PropertyInformation, id=pk)
+    def get(self, request, slug):
+        properties = get_object_or_404(PropertyInformation, slug=slug)
         form = self.form_class(instance=properties)
         return render(request, '', {'form':form})
     
-    def post(self, request, pk):
-        properties = get_object_or_404(PropertyInformation, id=pk)
+    def post(self, request, slug):
+        properties = get_object_or_404(PropertyInformation, slug=slug)
         form = self.form_class(request.POST, request.FILES, instance=properties)
         if form.is_valid():
             form.save()
-            return redirect('')
+            return redirect('', properties.slug)
     
 
 class PropertyDetailView(View):
-    def get(self, request, pk):
-        properties = get_object_or_404(PropertyInformation, id=pk)
+    def get(self, request, slug):
+        properties = get_object_or_404(PropertyInformation, slug=slug)
         return render(request, '', {'properties':properties})
+    
+    def post(self, request, slug):
+        properties = get_object_or_404(PropertyInformation, slug=slug)
+        parent_id = request.POST.get('parent_id')
+        body = request.POST.get('body')
+        comment = Comment.objects.create(body=body, property_post=properties, user=request.user, parent_id=parent_id)
+        comment.save()
+        return redirect('', properties.slug)
+
+
+class DeleteCommentView(View):
+    def get(self, request, pk, slug):
+        properties = get_object_or_404(properties, slug=slug)
+        comment = get_object_or_404(Comment, id=pk)
+        if comment.user.id == request.user.id:
+            comment.delete()
+            return redirect('', properties.slug)
+
+
+
+class PropertyDeleteView(DeleteView):
+    """
+     این مدل برای پاک کردن اگهی هستش
+    
+    """
+    template_name = ''
+    model = PropertyInformation
+    success_url = reverse_lazy('')
+
