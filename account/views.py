@@ -73,38 +73,5 @@ def profile_edite(request):
         return redirect('#home')
 
 
-class PropertyDeleteView(DeleteView):
-    template_name = ''
-    model = PropertyInformation
-    success_url = reverse_lazy('')
-
-
-class UserPropertyView(View):
-    def get(self, reqeust, pk):
-        user = get_object_or_404(User, id=pk)
-        property = user.property.all()
-        property_reserve = user.property.filter(is_reserve=True, is_public=True)
-        return render(reqeust, '', {'property': property, 'property_reserve':property_reserve})
-
-
-class UserProperUpdateFormView(View):
-    form_class = UserProperUpdateFormView
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user != request.user.id:
-            return redirect('')
-        return super().dispatch(request, *args, **kwargs)
-
-    def get(self, request, pk):
-        user = get_object_or_404(User, id=pk)
-        form = self.form_class(instance=user)
-        return render(request, '', {'form': form})
-
-    def post(self, request, pk):
-        user = get_object_or_404(User, id=pk)
-        form = self.form_class(request.POST, request.FILES, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('', user.pk)
 
 

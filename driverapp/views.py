@@ -2,7 +2,7 @@ from account.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DeleteView, ListView
+from django.views.generic.edit import DeleteView
 from .forms import DriverInformationForm, UserDriverForm
 from .models import *
 
@@ -107,12 +107,18 @@ class DeleteCommentView(View):
 
 
 
-class CarDeleteView(DeleteView):
+class CarDeleteView(View):
     """
      این مدل برای پاک کردن اگهی هستش
     
     """
-    template_name = ''
-    model = BusInformation
-    success_url = reverse_lazy('')
+    def get(self, request, slug):
+        car = get_object_or_404(BusInformation, slug=slug)
+        if car.user == request.user.id:
+            car.delete()
+            return redirect('')
+        else:
+            return redirect('')
+
+
 

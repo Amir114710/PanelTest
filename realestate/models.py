@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from account.models import User
 from django.db import models
 
 
@@ -198,7 +198,7 @@ class PropertyInformation(models.Model):
     environmental_context = models.ForeignKey(EnvironmentalContext,on_delete=models.CASCADE ,verbose_name='بافت محیطی')
     # Bedrooms Information.
     room_title = models.CharField(max_length=10000, verbose_name='عنوان اتاق')
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=1000)
     bed_count = models.ForeignKey(BedCount, on_delete=models.CASCADE, verbose_name='تعداد تخت ها')
     room_possibilities = models.ManyToManyField(RoomPossibilities, verbose_name='امکانات اتاق')
     type_ownership = models.ForeignKey(TypeOwnership, on_delete=models.CASCADE, verbose_name='نوع مالکیت')

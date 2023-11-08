@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'driverapp.apps.DriverappConfig',
     'realestate.apps.RealestateConfig',
     'account.apps.AccountConfig',
+    'foodapp.apps.FoodappConfig',
     # 3D party 
 ]
 

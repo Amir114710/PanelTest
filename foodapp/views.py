@@ -2,7 +2,8 @@ from account.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from .forms import PropertyInformationForm, UserPropertyForm
+from django.views.generic.edit import DeleteView
+from .forms import FoodInformationForm, UserFoodForm
 from .models import *
 
 
@@ -10,7 +11,7 @@ from .models import *
 
 
 # 
-class UserPropertyView(View):
+class UserFoodView(View):
     """
     برای نشون دادن اطلاعات کاربر 
     
@@ -26,8 +27,8 @@ class UserPropertyView(View):
         return render(request, '', {'user':user})
 
 
-class UserProperUpdateFormView(View):
-    form_class = UserPropertyForm
+class UserFoodUpdateFormView(View):
+    form_class = UserFoodForm
 
     def dispatch(self, request, *args, **kwargs):
         if request.user != request.user.id:
@@ -47,8 +48,8 @@ class UserProperUpdateFormView(View):
             return redirect('', user.pk)
 
 
-class PropertyInformationCreateView(View):
-    form_class = PropertyInformationForm
+class FoodInformationCreateView(View):
+    form_class = FoodInformationForm
     def get(self, request):
         form = self.form_class()
         return render(request, '', {'form':form})
@@ -61,8 +62,8 @@ class PropertyInformationCreateView(View):
             new.save()
             return redirect('')
 
-class PropertyInformationUpdateView(View):
-    form_class = PropertyInformationForm
+class FoodInformationUpdateView(View):
+    form_class = FoodInformationForm
 
     def dispatch(self, request, *args, **kwargs):
         if request.PropertyInformation.user.id != request.user.id:
@@ -70,25 +71,25 @@ class PropertyInformationUpdateView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, slug):
-        properties = get_object_or_404(PropertyInformation, slug=slug)
+        properties = get_object_or_404(FoodInformation, slug=slug)
         form = self.form_class(instance=properties)
         return render(request, '', {'form':form})
     
     def post(self, request, slug):
-        properties = get_object_or_404(PropertyInformation, slug=slug)
+        properties = get_object_or_404(FoodInformation, slug=slug)
         form = self.form_class(request.POST, request.FILES, instance=properties)
         if form.is_valid():
             form.save()
             return redirect('', properties.slug)
     
 
-class PropertyDetailView(View):
+class FoodDetailView(View):
     def get(self, request, slug):
-        properties = get_object_or_404(PropertyInformation, slug=slug)
+        properties = get_object_or_404(FoodInformation, slug=slug)
         return render(request, '', {'properties':properties})
     
     def post(self, request, slug):
-        properties = get_object_or_404(PropertyInformation, slug=slug)
+        properties = get_object_or_404(FoodInformation, slug=slug)
         parent_id = request.POST.get('parent_id')
         body = request.POST.get('body')
         comment = Comment.objects.create(body=body, property_post=properties, user=request.user, parent_id=parent_id)
@@ -106,15 +107,15 @@ class DeleteCommentView(View):
 
 
 
-class PropertyDeleteView(View):
+class FoodDeleteView(View):
     """
      این مدل برای پاک کردن اگهی هستش
     
     """
     def get(self, request, slug):
-        properties = get_object_or_404(PropertyInformation, slug=slug)
-        if properties.user == request.user.id:
-            properties.delete()
+        food = get_object_or_404(FoodInformation, slug=slug)
+        if food.user == request.user.id:
+            food.delete()
             return redirect('')
         else:
             return redirect('')

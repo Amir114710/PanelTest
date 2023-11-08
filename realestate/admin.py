@@ -7,8 +7,8 @@ from .models import *
 @admin.register(PropertyInformation)
 class PropertyInformationAdmin(admin.ModelAdmin):
     list_display = ('owner_name',)
-    prepopulated_fields = {'slug': ('title',)}
-
+    prepopulated_fields = {'slug': ('owner_name',)}
+    
 @admin.register(State)
 class PropertyInformationAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -87,3 +87,5 @@ class BedCountAdmin(admin.ModelAdmin):
 @admin.register(TypeOwnership)
 class TypeOwnershipAdmin(admin.ModelAdmin):
     list_display = ('name',)
+
+admin.site.register(Comment)
