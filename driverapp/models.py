@@ -45,6 +45,8 @@ class Comment(models.Model):
     car_post = models.ForeignKey(BusInformation, on_delete=models.CASCADE, related_name='comment', verbose_name='اگهی اتوبوس')
     name = models.CharField(max_length=1000, verbose_name='نام' )
     body = models.TextField(max_length=10000000, verbose_name='جزعیات نظر')
+    rate = models.IntegerField()
+    it_good = models.BooleanField(default=False, verbose_name='پیشنهاد میکنید؟')
     parent = models.ForeignKey("self", on_delete=models.CASCADE, related_name='reply', verbose_name='ریپلای')
 
     def __str__(self):

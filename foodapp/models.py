@@ -31,6 +31,8 @@ class FoodInformation(models.Model):
 class Comment(models.Model):
     food_post = models.ForeignKey(FoodInformation, on_delete=models.CASCADE, related_name='comment', verbose_name='اگهی اتوبوس')
     name = models.CharField(max_length=1000, verbose_name='نام' )
+    it_good = models.BooleanField(default=False, verbose_name='پیشنهاد میکنید؟')
+    rate = models.IntegerField()
     body = models.TextField(max_length=10000000, verbose_name='جزعیات نظر')
     parent = models.ForeignKey("self", on_delete=models.CASCADE, related_name='reply', verbose_name='ریپلای')
 

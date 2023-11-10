@@ -212,6 +212,8 @@ class Comment(models.Model):
     property_post = models.ForeignKey(PropertyInformation, on_delete=models.CASCADE, related_name='comment', verbose_name='اگهی ملک')
     name = models.CharField(max_length=1000, verbose_name='نام' )
     body = models.TextField(max_length=10000000, verbose_name=' نظر')
+    rate = models.IntegerField()
+    it_good = models.BooleanField(default=False, verbose_name='پیشنهاد میکنید؟')
     parent = models.ForeignKey("self", on_delete=models.CASCADE, related_name='reply', verbose_name='ریپلای')
 
     def __str__(self):
