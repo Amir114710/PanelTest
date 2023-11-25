@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
-@admin.register(FoodInformation)
+@admin.register(ChefInformation)
 class BusInformationAdmin(admin.ModelAdmin):
     '''Admin View for BusInformation'''
 

@@ -3,11 +3,8 @@ from . import views
 
 app_name = 'user'
 
-#  ادرس های پروفایل ملک دار
+#  ادرس های پروفایل راننده اتوبوس دار
 urlpatterns = [
-    path('profile/<int:pk>', views.UserPropertyView.as_view(), name='user_profile_url'),
-
-    path('profile/update/<int:pk>', views.UserProperUpdateFormView.as_view(), name='user_profile_update_url'),
 
     path('car/create', views.CarInformationCreateView.as_view(), name='car_create_url'),
 
@@ -18,6 +15,5 @@ urlpatterns = [
     path('property/detail/delete/<slug:slug>', views.CarDeleteView.as_view(), name='property_detail_delete_url'),
 
     path('comment/delete/<int:pk>/<slug:slug>', views.DeleteCommentView.as_view(), name='comment_delete'),
-
 
 ]

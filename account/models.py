@@ -20,6 +20,9 @@ class User(AbstractBaseUser):
     is_bus_driver = models.BooleanField(default=False, verbose_name='راننده ی اتوبوس', blank=True, null=True)
     is_simple_user = models.BooleanField(default=False, verbose_name='کاربر ساده', blank=True, null=True)
     is_realestate = models.BooleanField(default=False, verbose_name='املاک دار', blank=True, null=True)
+    is_chef = models.BooleanField(default=False, verbose_name=' اشپز', blank=True, null=True)
+    otp = models.CharField(max_length=4, blank=True, null=True)
+    date_added = models.DateField(auto_now_add=True , null=True)
 
     objects = UserManager()
 
@@ -31,8 +34,9 @@ class User(AbstractBaseUser):
         return self.phone
 
     class Meta:
+        ordering = ('-date_added',)
         verbose_name = 'کاربر'
-        verbose_name_plural = 'کاربر ها'
+        verbose_name_plural = 'کاربرها'
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"

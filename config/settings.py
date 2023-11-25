@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 from os import path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,23 +28,33 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # Keenthemes Apps
+APPS = [
     'driverapp.apps.DriverappConfig',
     'realestate.apps.RealestateConfig',
     'account.apps.AccountConfig',
     'foodapp.apps.FoodappConfig',
-    # 3D party 
+    'simpleuser.apps.SimpleuserConfig',
+]
+
+PACKAGES = [
+    'rest_framework',
+    'rest_framework.authtoken',
+    'drf_spectacular',
+    'ckeditor',
+    'ckeditor_uploader',
+]
+
+INSTALLED_APPS = [
+    "admin_persian",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    *APPS,
+    *PACKAGES,
 ]
 
 MIDDLEWARE = [
@@ -108,14 +119,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+# https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+LANGUAGE_CODE = "fa-ir"
 
-LANGUAGE_CODE = 'fa-ir'
-
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
@@ -123,13 +131,21 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = path.join(BASE_DIR, 'media')
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [path.join(BASE_DIR, 'assets')]
+STATICFILES_DIRS = [path.join(BASE_DIR, 'assets')] 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = path.join(BASE_DIR, 'media')
+STATIC_ROOT = path.join(BASE_DIR, 'static')
+CKEDITOR_UPLOAD_PATH = 'uploadFiles'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Advanced',
+    },
+}
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -141,3 +157,27 @@ STAR_RATINGS_RERATE = True
 STAR_RATINGS_ANONYMOUS = True
 
 AUTH_USER_MODEL = 'account.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5000),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5000),
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Panel',
+    'DESCRIPTION': 'Your panel description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST' : True ,
+    # OTHER SETTINGS
+}

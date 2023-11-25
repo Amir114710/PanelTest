@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = 'user'
+app_name = 'foodapp'
 
 #  ادرس های پروفایل ملک دار
 urlpatterns = [
@@ -18,6 +18,5 @@ urlpatterns = [
     path('food/detail/delete/<slug:slug>', views.FoodDeleteView.as_view(), name='food_detail_delete_url'),
 
     path('comment/delete/<int:pk>/<slug:slug>', views.DeleteCommentView.as_view(), name='comment_delete'),
-
 
 ]

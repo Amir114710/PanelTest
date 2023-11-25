@@ -20,8 +20,9 @@ class CartTypes(models.Model):
 
     def __str__(self):
         return self.name
+    
 class BusInformation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE , related_name='bus' , verbose_name='کاربر')
     device_color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='bus', verbose_name='رنگ وسیله')
     device_type = models.ForeignKey(DeviceTypes, on_delete=models.CASCADE, related_name='bus', verbose_name='نوع وسیله')
     plaque = models.CharField(max_length=20, verbose_name='نام پلاک')
@@ -42,8 +43,8 @@ class BusInformation(models.Model):
     is_public = models.BooleanField(default=False)
 
 class Comment(models.Model):
-    car_post = models.ForeignKey(BusInformation, on_delete=models.CASCADE, related_name='comment', verbose_name='اگهی اتوبوس')
-    name = models.CharField(max_length=1000, verbose_name='نام' )
+    car_post = models.ForeignKey(BusInformation, on_delete=models.CASCADE, related_name='comments', verbose_name='اگهی اتوبوس')
+    user = models.ForeignKey(User , on_delete=models.CASCADE , related_name='comments' , verbose_name='کاربر')
     body = models.TextField(max_length=10000000, verbose_name='جزعیات نظر')
     rate = models.IntegerField()
     it_good = models.BooleanField(default=False, verbose_name='پیشنهاد میکنید؟')
@@ -51,4 +52,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
-    

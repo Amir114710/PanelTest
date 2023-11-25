@@ -71,12 +71,12 @@ class FoodInformationUpdateView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, slug):
-        properties = get_object_or_404(FoodInformation, slug=slug)
+        properties = get_object_or_404(ChefInformation, slug=slug)
         form = self.form_class(instance=properties)
         return render(request, '', {'form':form})
     
     def post(self, request, slug):
-        properties = get_object_or_404(FoodInformation, slug=slug)
+        properties = get_object_or_404(ChefInformation, slug=slug)
         form = self.form_class(request.POST, request.FILES, instance=properties)
         if form.is_valid():
             form.save()
@@ -85,11 +85,11 @@ class FoodInformationUpdateView(View):
 
 class FoodDetailView(View):
     def get(self, request, slug):
-        properties = get_object_or_404(FoodInformation, slug=slug)
+        properties = get_object_or_404(ChefInformation, slug=slug)
         return render(request, '', {'properties':properties})
     
     def post(self, request, slug):
-        properties = get_object_or_404(FoodInformation, slug=slug)
+        properties = get_object_or_404(ChefInformation, slug=slug)
         parent_id = request.POST.get('parent_id')
         body = request.POST.get('body')
         comment = Comment.objects.create(body=body, property_post=properties, user=request.user, parent_id=parent_id)
@@ -113,7 +113,7 @@ class FoodDeleteView(View):
     
     """
     def get(self, request, slug):
-        food = get_object_or_404(FoodInformation, slug=slug)
+        food = get_object_or_404(ChefInformation, slug=slug)
         if food.user == request.user.id:
             food.delete()
             return redirect('')
